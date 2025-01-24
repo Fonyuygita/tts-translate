@@ -5,48 +5,140 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>TTS App - Dark Mode</title>
+  <title>TTS & Translation App</title>
 </head>
 
-<body class="bg-gray-900 flex items-center justify-center min-h-screen">
-  <div class="bg-gray-800 shadow-2xl rounded-2xl p-8 w-full max-w-md text-gray-200">
-    <h1 class="text-3xl font-bold text-center mb-6 text-cyan-500">
-      Text-to-Speech App
-    </h1>
-
-    <textarea
-      class="w-full h-32 p-4 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
-      placeholder="Type your text here..."></textarea>
-
-    <div class="mt-4">
-      <label class="block text-sm font-medium text-gray-400 mb-2">
-        Select Language
-      </label>
-      <select
-        class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
-        <option>English</option>
-        <option>Spanish</option>
-        <option>French</option>
-      </select>
-    </div>
-
-    <div class="mt-4">
-      <label class="block text-sm font-medium text-gray-400 mb-2">
-        Select Voice
-      </label>
-      <select
-        class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
-        <option>Default Voice</option>
-        <option>Male Voice</option>
-        <option>Female Voice</option>
-      </select>
-    </div>
-
-    <button
-      class="mt-6 w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500">
-      Play Text
-    </button>
+<body class="bg-gray-900 min-h-screen flex">
+  <div class="fixed top-0 left-0 right-0 z-50">
+    <!-- Desktop & Mobile Navbar -->
+    <nav class="bg-gray-800 text-white p-4 flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <div class="text-2xl font-bold text-cyan-500 hidden md:block">
+          TTS Translator
+        </div>
+        <button id="mobileMenuToggle" class="md:hidden focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <div class="hidden md:flex space-x-4">
+        <a href="#" class="hover:text-cyan-500">Home</a>
+        <a href="#" class="hover:text-cyan-500">Features</a>
+        <a href="#" class="hover:text-cyan-500">About</a>
+      </div>
+    </nav>
   </div>
+
+  <!-- Sidebar with Explanation -->
+  <div id="mobileSidebar"
+    class="fixed inset-0 bg-gray-900 z-40 transform -translate-x-full md:static md:translate-x-0 md:block md:w-1/4 lg:w-1/5 pt-20 md:pt-24 bg-gray-800 text-gray-300 overflow-y-auto">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold text-cyan-500 mb-6">App Architecture</h2>
+
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-xl font-semibold text-cyan-400 mb-2">Web Speech API</h3>
+          <p class="text-sm text-gray-400">Browser-native API enabling text-to-speech conversion using system voices.
+            Provides seamless audio synthesis directly in the web browser.</p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold text-cyan-400 mb-2">Google Translate</h3>
+          <p class="text-sm text-gray-400">Powerful translation service supporting 100+ languages. Enables real-time,
+            accurate text translation across diverse linguistic contexts.</p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold text-cyan-400 mb-2">Vercel Serverless</h3>
+          <p class="text-sm text-gray-400">Cloud platform for deploying scalable backend functions. Provides
+            event-driven compute without infrastructure management overhead.</p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-semibold text-cyan-400 mb-2">Key Technologies</h3>
+          <ul class="text-sm text-gray-400 space-y-2 list-disc list-inside">
+            <li>Real-time speech synthesis</li>
+            <li>Multi-language support</li>
+            <li>Instant translation</li>
+            <li>Responsive web design</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 md:w-3/4 lg:w-4/5 p-4 md:p-8 mt-20 md:mt-24">
+    <div class="bg-gray-800 shadow-2xl rounded-2xl p-6 max-w-2xl mx-auto text-gray-200">
+      <h1 class="text-3xl font-bold text-center mb-6 text-cyan-500">
+        Text-to-Speech Translator
+      </h1>
+
+      <textarea
+        class="w-full h-32 p-4 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+        placeholder="Type your text here..."></textarea>
+
+      <div class="mt-4 grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">
+            Source Language
+          </label>
+          <select
+            class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+            <option>English</option>
+            <option>Spanish</option>
+            <option>French</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">
+            Target Language
+          </label>
+          <select
+            class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+            <option>Spanish</option>
+            <option>French</option>
+            <option>German</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-400 mb-2">
+          Voice Selection
+        </label>
+        <select
+          class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+          <option>Default Voice</option>
+          <option>Male Voice</option>
+          <option>Female Voice</option>
+        </select>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mt-6">
+        <button
+          class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500">
+          Translate
+        </button>
+        <button
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500">
+          Speak
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileSidebar.classList.toggle('-translate-x-full');
+    });
+  </script>
 </body>
 
 </html>
