@@ -1,63 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css" />
-    <title>TTS & Translation App</title>
-  </head>
-  <body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white shadow-md rounded-lg p-6 max-w-md w-full">
-      <h1 class="text-2xl font-semibold text-gray-800 text-center mb-4">
-        TTS & Translation
-      </h1>
 
-      <!-- Text Input -->
-      <textarea
-        class="w-full h-32 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-        placeholder="Type your text here..."
-      ></textarea>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>TTS App - Dark Mode</title>
+</head>
 
-      <!-- Language Selection -->
-      <div class="mt-4">
-        <label
-          for="languageSelect"
-          class="block text-sm font-medium text-gray-700 mb-2"
-          >Select Language</label
-        >
-        <select
-          id="languageSelect"
-          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></select>
-      </div>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+  <div class="bg-gray-800 shadow-2xl rounded-2xl p-8 w-full max-w-md text-gray-200">
+    <h1 class="text-3xl font-bold text-center mb-6 text-cyan-500">
+      Text-to-Speech App
+    </h1>
 
-      <!-- Voice Selection -->
-      <div class="mt-4">
-        <label
-          for="voiceSelect"
-          class="block text-sm font-medium text-gray-700 mb-2"
-          >Select Voice</label
-        >
-        <select
-          id="voiceSelect"
-          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="default">Default Voice</option>
-          <option value="voice1">Voice 1</option>
-          <option value="voice2">Voice 2</option>
-        </select>
-      </div>
+    <textarea
+      class="w-full h-32 p-4 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+      placeholder="Type your text here..."></textarea>
 
-      <!-- Play Button -->
-      <button
-        class="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        id="playButton"
-      >
-        Play Text
-      </button>
+    <div class="mt-4">
+      <label class="block text-sm font-medium text-gray-400 mb-2">
+        Select Language
+      </label>
+      <select
+        class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+        <option>English</option>
+        <option>Spanish</option>
+        <option>French</option>
+      </select>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <div class="mt-4">
+      <label class="block text-sm font-medium text-gray-400 mb-2">
+        Select Voice
+      </label>
+      <select
+        class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+        <option>Default Voice</option>
+        <option>Male Voice</option>
+        <option>Female Voice</option>
+      </select>
+    </div>
+
+    <button
+      class="mt-6 w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500">
+      Play Text
+    </button>
+  </div>
+</body>
+
 </html>
