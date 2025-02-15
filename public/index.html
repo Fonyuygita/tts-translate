@@ -77,18 +77,22 @@
 
       <textarea
         class="w-full h-32 p-4 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
-        placeholder="Type your text here..."></textarea>
+        placeholder="Type your text here..." id="textarea"></textarea>
 
       <div class="mt-4 grid md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-400 mb-2">
+          <label class="block text-sm font-medium text-gray-400 mb-2"
+          for="languageSelect"
+          >
             Source Language
           </label>
           <select
-            class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
-            <option>English</option>
+            class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            id="languageSelect"
+            >
+            <!-- <option>English</option>
             <option>Spanish</option>
-            <option>French</option>
+            <option>French</option> -->
           </select>
         </div>
 
@@ -97,7 +101,8 @@
             Target Language
           </label>
           <select
-            class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+            class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            >
             <option>Spanish</option>
             <option>French</option>
             <option>German</option>
@@ -106,14 +111,14 @@
       </div>
 
       <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-400 mb-2">
+        <label class="block text-sm font-medium text-gray-400 mb-2" for="voiceSelect">
           Voice Selection
         </label>
         <select
-          class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
-          <option>Default Voice</option>
+          class="w-full p-3 bg-gray-700 text-gray-200 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" id="voiceSelect">
+          <!-- <option>Default Voice</option>
           <option>Male Voice</option>
-          <option>Female Voice</option>
+          <option>Female Voice</option> -->
         </select>
       </div>
 
@@ -123,6 +128,7 @@
           Translate
         </button>
         <button
+        id="playButton"
           class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500">
           Speak
         </button>
@@ -139,6 +145,7 @@
       mobileSidebar.classList.toggle('-translate-x-full');
     });
   </script>
+  <script src="script.js"></script>
 </body>
 
 </html>
