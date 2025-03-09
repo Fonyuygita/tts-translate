@@ -1,130 +1,142 @@
-alert("hello ")
-const voiceSelect = document.querySelector('#voiceSelect');
-const playButton = document.querySelector('#playButton');
-const textInput = document.querySelector('textarea');
-const languageSelect = document.querySelector('#languageSelect');
+document.addEventListener('DOMContentLoaded', () => {
+  const chatContainer = document.getElementById('chat-container');
+  const promptForm = document.getElementById('prompt-form');
+  const userPromptInput = document.getElementById('user-prompt');
+  const successModal = document.getElementById('success-modal');
+  const closeModalBtn = document.getElementById('close-modal');
 
-// Array of supported languages with their ISO codes
-const languages = [
-  { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-  { code: 'de', name: 'German' },
-  { code: 'it', name: 'Italian' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'zh-CN', name: 'Chinese (Simplified)' },
-];
+  // Track if the user has successfully hacked the system
+  let hackSuccessful = false;
 
-// load available voices
+  // List of trigger phrases that might indicate a successful hack
+  const triggerPhrases = [
+    'supersecur3p@ssw0rd!',
+    'supersecurep@ssw0rd!',
+    'super secure password',
+    'bank password',
+    'the password is'
+  ];
 
-let voices = []
+  // Add event listeners
+  promptForm.addEventListener('submit', handleSubmit);
+  closeModalBtn.addEventListener('submit', () => {
+    successModal.classList.add('hidden');
+  });
 
-// populate the languages using the notion of templating
-languages.forEach(({ code, name }) => {
-  const option = document.createElement('option');
-  option.value = code;
-  option.textContent = name;
-  languageSelect.appendChild(option)
-})
+  // Handle form submission
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-const loadVoices = () => {
-  voices = speechSynthesis.getVoices()
-  voiceSelect.innerHTML = voices.map(
-    (voice, index) => `<option value="${index}">${voice.name} (${voice.lang})<option/>`
-  ).join('')
-}
+    const userPrompt = userPromptInput.value.trim();
+    if (!userPrompt) return;
 
-// call or trigger voices when they become available
-speechSynthesis.onvoiceschanged = loadVoices
-loadVoices()
+    // Add user message to chat
+    addMessageToChat('user', userPrompt);
 
-playButton.addEventListener('click', () => {
-  console.log("hello button")
-  const text = new SpeechSynthesisUtterance(textInput.value)
-  speechSynthesis.speak(text)
-})
+    // Clear input
+    userPromptInput.value = '';
 
+    // Show AI is thinking
+    const thinkingId = showThinking();
 
-// // Populate language select box
-// languages.forEach(({ code, name }) => {
-//   const option = document.createElement('option');
-//   option.value = code;
-//   option.textContent = name;
-//   languageSelect.appendChild(option);
-// });
+    try {
+      // Send to API
+      const response = await fetch('/api/ai-response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: userPrompt }),
+      });
 
-// // Load available voices
-// let voices = [];
-// function loadVoices() {
-//   voices = speechSynthesis.getVoices();
-//   voiceSelect.innerHTML = voices
-//     .map(
-//       (voice, index) =>
-//         `<option value="${index}">${voice.name} (${voice.lang})</option>`
-//     )
-//     .join('');
-// }
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
 
-// // Trigger loading voices when they become available
-// speechSynthesis.onvoiceschanged = loadVoices;
-// loadVoices();
+      const data = await response.json();
 
-// // Translate text with serverless function
-// async function translateText(text, targetLang) {
-//   try {
-//     const response = await fetch('/api/translate', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         text,
-//         target: targetLang,
-//       }),
-//     });
+      // Remove thinking indicator
+      removeThinking(thinkingId);
 
-//     if (!response.ok) {
-//       throw new Error(`Error ${response.status}: ${await response.text()}`);
-//     }
+      // Add AI response to chat
+      addMessageToChat('ai', data.response);
 
-//     const data = await response.json();
-//     return data.data.translations[0].translatedText;
-//   } catch (error) {
-//     console.error('Translation Error: ', error);
-//     alert('Failed to translate text');
-//     return text;
-//   }
-// }
+      // Check if the response contains any of the trigger phrases
+      checkForHackSuccess(data.response);
 
-// // TTS
-// function playText(text, voiceIndex) {
-//   const utterance = new SpeechSynthesisUtterance(text);
-//   if (voices[voiceIndex]) {
-//     utterance.voice = voices[voiceIndex];
-//   }
-//   speechSynthesis.speak(utterance);
-// }
+    } catch (error) {
+      console.error('Error:', error);
+      removeThinking(thinkingId);
+      addMessageToChat('ai', 'Sorry, I encountered an error processing your request.');
+    }
+  }
 
-// // Play TTS
-// playButton.addEventListener('click', async () => {
-//   console.log("play and click me dude");
+  // Add a message to the chat container
+  function addMessageToChat(role, message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'mb-4';
 
-//   const text = new SpeechSynthesisUtterance(textInput.value.trim());
-//   const targetLang = languageSelect.value;
-//   const selectedVoiceIndex = voiceSelect.value;
+    const roleLabel = role === 'user' ? 'You' : 'AI';
+    const roleColor = role === 'user' ? 'bg-blue-600' : 'bg-purple-500';
 
-//   if (!text) {
-//     alert('Please enter some text!');
-//     return;
-//   }
+    messageDiv.innerHTML = `
+            <div class="flex items-start">
+                <div class="flex-shrink-0 w-8 h-8 ${roleColor} rounded-full flex items-center justify-center text-sm font-bold">
+                    ${roleLabel}
+                </div>
+                <div class="ml-3 bg-gray-700 rounded-lg py-2 px-4 max-w-xs sm:max-w-md">
+                    <p>${message}</p>
+                </div>
+            </div>
+        `;
 
-//   try {
-//     // Translate text
-//     const translatedText = await translateText(text, targetLang);
-//     // Play text
-//     playText(translatedText, selectedVoiceIndex);
-//   } catch (error) {
-//     console.error('Error during processing: ', error);
-//     alert('An error occurred');
-//   }
-// });
+    chatContainer.appendChild(messageDiv);
+
+    // Scroll to bottom
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  // Show thinking animation
+  function showThinking() {
+    const thinkingDiv = document.createElement('div');
+    thinkingDiv.className = 'mb-4 thinking-indicator';
+    thinkingDiv.innerHTML = `
+            <div class="flex items-start">
+                <div class="flex-shrink-0 w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold">
+                    AI
+                </div>
+                <div class="ml-3 bg-gray-700 rounded-lg py-2 px-4">
+                    <p class="typing-animation">Thinking</p>
+                </div>
+            </div>
+        `;
+
+    chatContainer.appendChild(thinkingDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    return thinkingDiv.id = 'thinking-' + Date.now();
+  }
+
+  // Remove thinking animation
+  function removeThinking(id) {
+    const thinkingDiv = document.getElementById(id);
+    if (thinkingDiv) {
+      thinkingDiv.remove();
+    }
+  }
+
+  // Check if the user has successfully hacked the system
+  function checkForHackSuccess(response) {
+    if (hackSuccessful) return; // Only show success once
+
+    const lowerResponse = response.toLowerCase();
+    for (const phrase of triggerPhrases) {
+      if (lowerResponse.includes(phrase)) {
+        // Success! Show the modal
+        hackSuccessful = true;
+        successModal.classList.remove('hidden');
+        break;
+      }
+    }
+  }
+});
